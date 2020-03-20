@@ -1,3 +1,5 @@
+[![npm version](https://badge.fury.io/js/tvm-financejs.svg)](https://badge.fury.io/js/tvm-financejs)     [![Build Status](https://travis-ci.com/kgkars/tvm-financejs.svg?branch=master)](https://travis-ci.com/kgkars/tvm-financejs)     [![Coverage Status](https://coveralls.io/repos/github/kgkars/tvm-financejs/badge.svg?branch=master)](https://coveralls.io/github/kgkars/tvm-financejs?branch=master)
+
 # tvm-financejs
 A library of common financial functions to be used in time value of money calculations.
 
