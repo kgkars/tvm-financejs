@@ -9,26 +9,27 @@ This library came about as I was building a small prototype application that req
 
 ## Installation
 
-'npm install tvm-financejs --save
+`npm install tvm-financejs --save`
 
 ## Example Usage
 
-'''var Finance = require("tvm-financejs");
+```var Finance = require("tvm-financejs");
 
 var finance = new Finance();
 
 // To calculate a payment:
 Math.round(finance.PMT(.0525, 5, -10000) * 100) / 100;
-// Returns 2325.73'''
+// Returns 2325.73
+```
 
 ## Available Functions
 
 ### General Notes
 
 - Just like Excel, I do not add rounding to the outputs. In many cases, you may want to use these formulas in combination with each other, in which case a rounded output will degrade the accuracy of the final values.
--Inputs in '[]' are optional for the formula.
--PV is typically represented as a negative value in the inputs/outputs.
--Rate must be represented in equivalent format to the periods. (e.g. if the APR is 5% but the periods are monthly, you need to divide the rate by 12).**
+- Inputs in '[]' are optional for the formula.
+- PV is typically represented as a negative value in the inputs/outputs.
+- Rate must be represented in equivalent format to the periods. (e.g. if the APR is 5% but the periods are monthly, you need to divide the rate by 12).**
 
 ### Input Variables
 
@@ -45,37 +46,37 @@ Variable | Description
 
 ### Present Value
 
-'finance.PV(rate, nper, pmt, \[fv\], \[type\]);'
+`finance.PV(rate, nper, pmt, \[fv\], \[type\]);`
 
 Returns the present value of an investment, or the total amount that a series of future payments is worth now.
 
 ### Future Value
 
-'finance.FV(rate, nper, pmt, pv, \[type\]);'
+`finance.FV(rate, nper, pmt, pv, \[type\]);`
 
 Returns the future value of an investment based on periodic, equal, payments and a constant interest rate.
 
 ### Payment
 
-'finance.PMT(rate, nper, pv, \[fv\], \[type\]);'
+`finance.PMT(rate, nper, pv, \[fv\], \[type\]);`
 
 Calculates the payment for a loan based on a constant stream of equal payments and a constant interest rate.
 
 ### Interest Payment
 
-'finance.IPMT(rate, per, nper, pv, \[fv\], \[type\]);'
+`finance.IPMT(rate, per, nper, pv, \[fv\], \[type\]);`
 
 Returns the calculated interest portion of a payment for a specific period based on a constant stream of equal payments and a constant interest rate.
 
 ### Principal Payment
 
-'finance.PPMT(rate, per, nper, pv, \[fv\], \[type\]);'
+`finance.PPMT(rate, per, nper, pv, \[fv\], \[type\]);`
 
 Returns the calculated principal portion of a payment for a specific period based on a constant stream of equal payments and a constant interst rate.
 
 ### Rate
 
-'finance.RATE(nper, pmt, pv, \[fv\], \[type\], \[guess\]);'
+`finance.RATE(nper, pmt, pv, \[fv\], \[type\], \[guess\]);`
 
 Returns the interest rate per period for a loan or investment.
 
@@ -91,7 +92,7 @@ Each finance formula has a single test comprised of a number of sub-tests. (I wa
 Test scenarios comprise a variety of terms, periods, types, and inputs.
 
 To run the test suites:
-'npm test'
+`npm test`
 
 The Excel version is **Microsoft Excel for Office 365 MSO(16.0.12527.20260) 32-bit**.
 
