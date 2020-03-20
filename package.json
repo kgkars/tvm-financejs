@@ -4,7 +4,8 @@
   "description": "A JavaScript library of common financial functions to be used in time value of money calculations.",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "coveralls": "jest --coverage && coveralls < coverage/lcov.info"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,7 @@
   },
   "homepage": "https://github.com/kgkars/tvm-financejs#readme",
   "devDependencies": {
+    "coveralls": "^3.0.11",
     "jest": "^25.1.0"
   }
 }
