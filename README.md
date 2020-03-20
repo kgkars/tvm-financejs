@@ -46,37 +46,37 @@ Variable | Description
 
 ### Present Value
 
-`finance.PV(rate, nper, pmt, \[fv\], \[type\]);`
+`finance.PV(rate, nper, pmt, [fv], [type]);`
 
 Returns the present value of an investment, or the total amount that a series of future payments is worth now.
 
 ### Future Value
 
-`finance.FV(rate, nper, pmt, pv, \[type\]);`
+`finance.FV(rate, nper, pmt, pv, [type]);`
 
 Returns the future value of an investment based on periodic, equal, payments and a constant interest rate.
 
 ### Payment
 
-`finance.PMT(rate, nper, pv, \[fv\], \[type\]);`
+`finance.PMT(rate, nper, pv, [fv], [type]);`
 
 Calculates the payment for a loan based on a constant stream of equal payments and a constant interest rate.
 
 ### Interest Payment
 
-`finance.IPMT(rate, per, nper, pv, \[fv\], \[type\]);`
+`finance.IPMT(rate, per, nper, pv, [fv], [type]);`
 
 Returns the calculated interest portion of a payment for a specific period based on a constant stream of equal payments and a constant interest rate.
 
 ### Principal Payment
 
-`finance.PPMT(rate, per, nper, pv, \[fv\], \[type\]);`
+`finance.PPMT(rate, per, nper, pv, [fv\], [type]);`
 
 Returns the calculated principal portion of a payment for a specific period based on a constant stream of equal payments and a constant interst rate.
 
 ### Rate
 
-`finance.RATE(nper, pmt, pv, \[fv\], \[type\], \[guess\]);`
+`finance.RATE(nper, pmt, pv, [fv], [type], [guess]);`
 
 Returns the interest rate per period for a loan or investment.
 
