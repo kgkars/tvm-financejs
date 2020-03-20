@@ -1,25 +1,237 @@
 //Test file for index.js
 
-var Finance = require('../index.js');
+const Finance = require('../index.js');
 
-var finance = new Finance();
+const finance = new Finance();
 
-test("Calculate PV of (5.25%, 5, 6000, 0, 0)", () => {
+test("PV Function (5 Test Cases / Match Excel to 8 decimal places)", () => {
   expect(finance.PV(.0525, 5, 6000)).toBeCloseTo(-25798.316343571, 8);
-});
-
-test("Calculate PV of (6.88%, 10, 150000, 10000, 0)", () => {
   expect(finance.PV(0.0688, 10, 150000, 10000)).toBeCloseTo(-1064546.969721610, 8);
-});
-
-test("Calculate PV of (.006875, 60, 3250, 0, 1)", () => {
   expect(finance.PV(0.006875, 60, 3250, 0, 1)).toBeCloseTo(-160438.486624723, 8);
-});
-
-test("Calculate PV of (.009166667, 180, 525, 50, 0)", () => {
-  expect(finance.PV(.11/12, 180, 525, 50)).toBeCloseTo(-46200.1919210731, 8);
-});
-
-test("Calculate PV of (0.010625, 8, 32.5, 0, 1)", () => {
+  expect(finance.PV(0.11 / 12, 180, 525, 50)).toBeCloseTo(-46200.1919210731, 8);
   expect(finance.PV(0.010625, 8, 32.5, 0, 1)).toBeCloseTo(-250.631442440053, 8);
+});
+
+test("PMT Function (5 Test Cases / Match Excel to 8 decimal places)", () => {
+  expect(finance.PMT(0.0525, 5, -10000)).toBeCloseTo(2325.7331680465, 8);
+  expect(finance.PMT(0.006875, 60, -150000, 0, 1)).toBeCloseTo(3038.5477341250, 8);
+  expect(finance.PMT(0.0275, 10, -25566, 500)).toBeCloseTo(2914.88183332968, 8);
+  expect(finance.PMT(0.025/12, 180, -55555, 1000, 1)).toBeCloseTo(365.0895830102480, 8);
+  expect(finance.PMT(0.22, 1, -15000)).toBeCloseTo(18300.0, 8);
+});
+
+test("FV Function (5 Test Cases / Match Excel to 8 decimal places)", () => {
+  expect(finance.FV(0.0525, 8, 6000, -15000)).toBeCloseTo(-35221.99955623980, 8);
+  expect(finance.FV(0.005625, 60, 500, -30000, 1)).toBeCloseTo(6237.618899257980, 8);
+  expect(finance.FV(0.11/12, 24, 8025, -250000)).toBeCloseTo(96870.88840793330, 8);
+  expect(finance.FV(0.125, 6, 58, -5000, 1)).toBeCloseTo(9600.18907928466, 8);
+  expect(finance.FV(0.07/12, 240, 1500, -200000)).toBeCloseTo(26357.78005816120, 8);
+});
+
+test("IPMT Function (12 Test Cases / Match Excel to 8 decimal places)", () => {
+  expect(finance.IPMT(0.02, 5, 5, -608926, 37115, 0)).toBeCloseTo(3121.01575472915, 8);
+  expect(finance.IPMT(0.0025, 9, 24, -62088, 16679, 0)).toBeCloseTo(118.13247244596, 8);
+  expect(finance.IPMT(0.0075, 1, 36, -303575, 0, 1)).toBeCloseTo(0, 8);
+  expect(finance.IPMT(0.0083333333333333, 56, 240, -244184, 40099, 1)).toBeCloseTo(1863.87630524189, 8);
+  expect(finance.IPMT(0.05, 4, 8, -204252, 4793, 1)).toBeCloseTo(6590.64284869969, 8);
+  expect(finance.IPMT(0.00916666666666667, 10, 60, -276452, 0, 0)).toBeCloseTo(2236.57965430518, 8);
+  expect(finance.IPMT(0.0158333333333333, 98, 180, -740363, 1255, 1)).toBeCloseTo(8939.86781612986, 8);
+  expect(finance.IPMT(0.0225, 4, 16, -324779, 0, 1)).toBeCloseTo(5993.04338111598, 8);
+  expect(finance.IPMT(0.015, 36, 48, -518630, 39718, 0)).toBeCloseTo(3071.36493572514, 8);
+  expect(finance.IPMT(0.00333333333333333, 244, 360, -490152, 36758, 0)).toBeCloseTo(820.609615385237, 8);
+  expect(finance.IPMT(0.0525, 0, 24, -10000)).toBe("Error - invalid Period");
+  expect(finance.IPMT(0.0525, 25, 24, -10000)).toBe("Error - invalid Period");
+});
+
+test("PMT Function (12 Test Cases / Match Excel to 8 decimal places)", () => {
+  expect(finance.PPMT(0.02, 5, 5, -608926, 37115, 0)).toBeCloseTo(118935.787736457, 8);
+  expect(finance.PPMT(0.0025, 9, 24, -62088, 16679, 0)).toBeCloseTo(1875.2988823337, 8);
+  expect(finance.PPMT(0.0075, 1, 36, -303575, 0, 1)).toBeCloseTo(9581.74078634391, 8);
+  expect(finance.PPMT(0.00833333333333333, 56, 240, -244184, 40099, 1)).toBeCloseTo(420.708247831785, 8);
+  expect(finance.PPMT(0.05, 4, 8, -204252, 4793, 1)).toBeCloseTo(23028.6983173609, 8);
+  expect(finance.PPMT(0.00916666666666667, 10, 60, -276452, 0, 0)).toBeCloseTo(3774.15668897321, 8);
+  expect(finance.PPMT(0.0158333333333333, 98, 180, -740363, 1255, 1)).toBeCloseTo(3324.09497421923, 8);
+  expect(finance.PPMT(0.0225, 4, 16, -324779, 0, 1)).toBeCloseTo(17866.4226038686, 8);
+  expect(finance.PPMT(0.015, 36, 48, -518630, 39718, 0)).toBeCloseTo(11592.444876619, 8);
+  expect(finance.PPMT(0.00333333333333333, 244, 360, -490152, 36758, 0)).toBeCloseTo(1466.48935600409, 8);
+  expect(finance.PPMT(0.0525, 0, 24, -10000)).toBe("Error - invalid Period");
+  expect(finance.PPMT(0.0525, 25, 24, -10000)).toBe("Error - invalid Period");
+});
+
+test("RATE Function (160 Test Cases / Match Excel to 8 decimal places)", () => {
+  expect(finance.RATE(60, 500, -25000)).toBeCloseTo(0.00618341316125388, 8);
+  expect(finance.RATE(312, 5113, -1501935, 2368, 0, 0.198)).toBeCloseTo(0.000398266895514718, 8);
+  expect(finance.RATE(276, 1991, -446386, 3135, 1, 0.047)).toBeCloseTo(0.00160511310935709, 8);
+  expect(finance.RATE(223, 13549, -2888300, 1933, 1, 0.092)).toBeCloseTo(0.00041475010529662, 8);
+  expect(finance.RATE(126, 20238, -2140351, 7442, 1, 0.081)).toBeCloseTo(0.00293553013208551, 8);
+  expect(finance.RATE(214, 21362, -4182079, 7276, 0, 0.141)).toBeCloseTo(0.000854961958127848, 8);
+  expect(finance.RATE(180, 23960, -3649167, 1522, 0, 0.116)).toBeCloseTo(0.00190536379381439, 8);
+  expect(finance.RATE(164, 15459, -2192401, 775, 0, 0.108)).toBeCloseTo(0.00181051005231611, 8);
+  expect(finance.RATE(217, 8596, -1734632, 3621, 1, 0.136)).toBeCloseTo(0.000698349389820266, 8);
+  expect(finance.RATE(311, 15144, -4029036, 383, 1, 0.089)).toBeCloseTo(0.00103602795818093, 8);
+  expect(finance.RATE(276, 7505, -2015447, 9386, 0, 0.057)).toBeCloseTo(0.000230511998597642, 8);
+  expect(finance.RATE(11, 22492, -229079, 5524, 1, 0.144)).toBeCloseTo(0.0199023449392075, 8);
+  expect(finance.RATE(177, 8311, -1384409, 1432, 1, 0.049)).toBeCloseTo(0.000707836232406421, 8);
+  expect(finance.RATE(198, 19389, -3074559, 9872, 0, 0.115)).toBeCloseTo(0.00234465904271924, 8);
+  expect(finance.RATE(200, 5958, -1039506, 4342, 1, 0.126)).toBeCloseTo(0.0014395827447051, 8);
+  expect(finance.RATE(138, 21076, -2432309, 6287, 1, 0.036)).toBeCloseTo(0.00272546449141395, 8);
+  expect(finance.RATE(330, 15044, -4486044, 8313, 0, 0.148)).toBeCloseTo(0.000632614705765373, 8);
+  expect(finance.RATE(331, 7598, -2356970, 5476, 0, 0.15)).toBeCloseTo(0.000407683800118725, 8);
+  expect(finance.RATE(134, 15758, -1895172, 4934, 0, 0.069)).toBeCloseTo(0.00166475629935309, 8);
+  expect(finance.RATE(33, 5147, -146194, 1578, 0, 0.002)).toBeCloseTo(0.00957576368703414, 8);
+  expect(finance.RATE(344, 17589, -5523277, 649, 0, 0.063)).toBeCloseTo(0.000537595095864107, 8);
+  expect(finance.RATE(22, 5932, -123577, 6580, 0, 0.086)).toBeCloseTo(0.00881917963733835, 8);
+  expect(finance.RATE(155, 20842, -3102968, 4446, 1, 0.137)).toBeCloseTo(0.000544239861100565, 8);
+  expect(finance.RATE(285, 1216, -321116, 8776, 1, 0.023)).toBeCloseTo(0.000708268029668575, 8);
+  expect(finance.RATE(336, 9961, -3108668, 9163, 0, 0.078)).toBeCloseTo(0.000459213529829167, 8);
+  expect(finance.RATE(122, 9812, -1004763, 5725, 0, 0.154)).toBeCloseTo(0.00300716250813055, 8);
+  expect(finance.RATE(199, 16086, -2994548, 6580, 1, 0.187)).toBeCloseTo(0.000701558154195127, 8);
+  expect(finance.RATE(99, 10266, -1004920, 7226, 0, 0.027)).toBeCloseTo(0.000366219744423884, 8);
+  expect(finance.RATE(26, 7904, -184960, 329, 1, 0.007)).toBeCloseTo(0.00874829226787922, 8);
+  expect(finance.RATE(243, 9330, -1970357, 5884, 0, 0.157)).toBeCloseTo(0.00119814752062934, 8);
+  expect(finance.RATE(103, 11912, -1066742, 0, 1, 0.07)).toBeCloseTo(0.00281578100633434, 8);
+  expect(finance.RATE(86, 17673, -1474605, 1223, 1, 0.007)).toBeCloseTo(0.000734028318250167, 8);
+  expect(finance.RATE(4, 1727, -5869, 2511, 0, 0.05)).toBeCloseTo(0.185406220575096, 8);
+  expect(finance.RATE(287, 4151, -1060234, 2650, 1, 0.168)).toBeCloseTo(0.000846548723340286, 8);
+  expect(finance.RATE(302, 11603, -3286101, 7871, 0, 0.189)).toBeCloseTo(0.000442844796976862, 8);
+  expect(finance.RATE(243, 2170, -526404, 7031, 1, 0.067)).toBeCloseTo(0.000122376059185961, 8);
+  expect(finance.RATE(225, 4009, -734378, 6774, 0, 0.2)).toBeCloseTo(0.00194474982177568, 8);
+  expect(finance.RATE(2, 24990, -44133, 5111, 1, 0.181)).toBeCloseTo(0.485204835437238, 8);
+  expect(finance.RATE(273, 23745, -6205929, 4999, 1, 0.064)).toBeCloseTo(0.000328398503338196, 8);
+  expect(finance.RATE(99, 15832, -1299562, 6818, 0, 0.059)).toBeCloseTo(0.00395329828164559, 8);
+  expect(finance.RATE(220, 24954, -4675157, 9526, 0, 0.199)).toBeCloseTo(0.00150966102259892, 8);
+  expect(finance.RATE(273, 16430, -3632791, 6724, 1, 0.083)).toBeCloseTo(0.00161997024323132, 8);
+  expect(finance.RATE(296, 22275, -5421542, 6321, 1, 0.097)).toBeCloseTo(0.00137991050304564, 8);
+  expect(finance.RATE(139, 23048, -2671570, 7518, 0, 0.193)).toBeCloseTo(0.00271016227878625, 8);
+  expect(finance.RATE(79, 2121, -144517, 1507, 1, 0.039)).toBeCloseTo(0.00410778535283133, 8);
+  expect(finance.RATE(17, 16761, -284078, 2694, 1, 0.077)).toBeCloseTo(0.00154228528490546, 8);
+  expect(finance.RATE(200, 12278, -2010763, 613, 0, 0.19)).toBeCloseTo(0.00206310002884818, 8);
+  expect(finance.RATE(295, 24390, -6593028, 0, 1, 0.168)).toBeCloseTo(0.000603586362696535, 8);
+  expect(finance.RATE(140, 18819, -2303179, 6159, 0, 0.069)).toBeCloseTo(0.00198347493026944, 8);
+  expect(finance.RATE(176, 4961, -863645, 13, 1, 0.065)).toBeCloseTo(0.000125316577590557, 8);
+  expect(finance.RATE(178, 2843, -422325, 8178, 0, 0.022)).toBeCloseTo(0.00224350641577668, 8);
+  expect(finance.RATE(358, 19887, -6295746, 3244, 1, 0.05)).toBeCloseTo(0.000706304002422249, 8);
+  expect(finance.RATE(96, 21424, -1860660, 6952, 1, 0.181)).toBeCloseTo(0.00221461071778762, 8);
+  expect(finance.RATE(111, 12246, -1208646, 2746, 1, 0.028)).toBeCloseTo(0.00221639698498289, 8);
+  expect(finance.RATE(292, 16874, -4640236, 6337, 0, 0.051)).toBeCloseTo(0.000422262379056628, 8);
+  expect(finance.RATE(278, 5183, -1345769, 1910, 1, 0.144)).toBeCloseTo(0.000508056995605632, 8);
+  expect(finance.RATE(177, 6605, -1092172, 2425, 1, 0.036)).toBeCloseTo(0.000805162847578353, 8);
+  expect(finance.RATE(29, 8774, -232902, 6774, 0, 0.058)).toBeCloseTo(0.0076356150275949, 8);
+  expect(finance.RATE(222, 6570, -1440544, 9778, 1, 0.178)).toBeCloseTo(0.000172237006664784, 8);
+  expect(finance.RATE(355, 18057, -5696196, 7741, 0, 0.009)).toBeCloseTo(0.000683459074363383, 8);
+  expect(finance.RATE(308, 11291, -3470454, 0, 1, 0.084)).toBeCloseTo(1.34577251657501E-05, 8);
+  expect(finance.RATE(224, 1860, -350204, 7664, 1, 0.01)).toBeCloseTo(0.0017503573417316, 8);
+  expect(finance.RATE(218, 5718, -1106688, 6454, 1, 0.096)).toBeCloseTo(0.00116381496000191, 8);
+  expect(finance.RATE(34, 20800, -640522, 3092, 1, 0.043)).toBeCloseTo(0.00637600284560152, 8);
+  expect(finance.RATE(274, 16705, -4536671, 8707, 0, 0.125)).toBeCloseTo(7.84530576385179E-05, 8);
+  expect(finance.RATE(102, 22496, -2008279, 4146, 0, 0.172)).toBeCloseTo(0.00268237833127317, 8);
+  expect(finance.RATE(298, 23953, -6626784, 9002, 0, 0.05)).toBeCloseTo(0.000511479154773292, 8);
+  expect(finance.RATE(168, 17160, -2451409, 9530, 1, 0.06)).toBeCloseTo(0.00203498648437955, 8);
+  expect(finance.RATE(150, 2571, -334290, 1076, 0, 0.068)).toBeCloseTo(0.00197499650556869, 8);
+  expect(finance.RATE(82, 19136, -1324237, 5946, 1, 0.118)).toBeCloseTo(0.00441103998256208, 8);
+  expect(finance.RATE(245, 10758, -2112477, 318, 0, 0.007)).toBeCloseTo(0.0018726933690712, 8);
+  expect(finance.RATE(39, 16533, -530409, 0, 0, 0.05)).toBeCloseTo(0.0101362834500316, 8);
+  expect(finance.RATE(317, 14418, -4248981, 2071, 0, 0.146)).toBeCloseTo(0.000467271056656737, 8);
+  expect(finance.RATE(263, 15443, -4010723, 7410, 1, 0.055)).toBeCloseTo(0.000110039707289779, 8);
+  expect(finance.RATE(207, 18694, -3812444, 7914, 1, 0.159)).toBeCloseTo(0.000164599539324632, 8);
+  expect(finance.RATE(162, 6546, -936454, 9829, 0, 0.167)).toBeCloseTo(0.00166295784573264, 8);
+  expect(finance.RATE(215, 20521, -4270566, 5711, 1, 0.188)).toBeCloseTo(0.000318084395048042, 8);
+  expect(finance.RATE(147, 24624, -3611509, 2972, 1, 0.088)).toBeCloseTo(4.23702182303982E-05, 8);
+  expect(finance.RATE(190, 1996, -333318, 9378, 1, 0.187)).toBeCloseTo(0.0016301344362312, 8);
+  expect(finance.RATE(285, 1429, -374184, 562, 1, 0.163)).toBeCloseTo(0.000614663464400106, 8);
+  expect(finance.RATE(135, 18521, -2097734, 4981, 0, 0.081)).toBeCloseTo(0.00269031322642675, 8);
+  expect(finance.RATE(197, 3032, -534447, 5740, 0, 0.07)).toBeCloseTo(0.0012342096488345, 8);
+  expect(finance.RATE(29, 14238, -352866, 3315, 0, 0.011)).toBeCloseTo(0.0112854557669366, 8);
+  expect(finance.RATE(196, 23909, -3813108, 1284, 0, 0.004)).toBeCloseTo(0.00217422329200727, 8);
+  expect(finance.RATE(68, 23751, -1419023, 4026, 0, 0.053)).toBeCloseTo(0.00390656064241712, 8);
+  expect(finance.RATE(83, 13770, -957714, 1891, 0, 0.065)).toBeCloseTo(0.00438192844551867, 8);
+  expect(finance.RATE(329, 6925, -2146036, 0, 1, 0.193)).toBeCloseTo(0.0003685458175287, 8);
+  expect(finance.RATE(283, 8736, -2284339, 1256, 0, 0.068)).toBeCloseTo(0.000567843069743539, 8);
+  expect(finance.RATE(90, 11767, -979823, 7750, 1, 0.046)).toBeCloseTo(0.00192680878928167, 8);
+  expect(finance.RATE(93, 11249, -911497, 8312, 0, 0.033)).toBeCloseTo(0.00315805963348429, 8);
+  expect(finance.RATE(166, 17474, -2331611, 581, 1, 0.118)).toBeCloseTo(0.00275822654220477, 8);
+  expect(finance.RATE(235, 10816, -2044793, 3455, 0, 0.109)).toBeCloseTo(0.00192683328162759, 8);
+  expect(finance.RATE(241, 1447, -348427, 804, 0, 0.006)).toBeCloseTo(2.60992548339763E-05, 8);
+  expect(finance.RATE(12, 16747, -163135, 9594, 0, 0.17)).toBeCloseTo(0.0400297812717098, 8);
+  expect(finance.RATE(308, 2803, -810600, 8122, 0, 0.168)).toBeCloseTo(0.000469983346064798, 8);
+  expect(finance.RATE(170, 6479, -998907, 9141, 0, 0.013)).toBeCloseTo(0.00125239919399876, 8);
+  expect(finance.RATE(204, 24311, -4417707, 8616, 0, 0.054)).toBeCloseTo(0.00116721529757816, 8);
+  expect(finance.RATE(38, 10106, -353349, 443, 1, 0.032)).toBeCloseTo(0.00463765117638594, 8);
+  expect(finance.RATE(299, 23116, -6874901, 1331, 0, 0.055)).toBeCloseTo(3.68849122449443E-05, 8);
+  expect(finance.RATE(194, 12560, -2231576, 8557, 0, 0.067)).toBeCloseTo(0.000949357454944168, 8);
+  expect(finance.RATE(154, 10955, -1585617, 5692, 0, 0.001)).toBeCloseTo(0.000850529280201041, 8);
+  expect(finance.RATE(274, 13347, -3279101, 8840, 1, 0.154)).toBeCloseTo(0.000831133684832732, 8);
+  expect(finance.RATE(264, 8526, -1940591, 6081, 0, 0.033)).toBeCloseTo(0.00116729444344216, 8);
+  expect(finance.RATE(132, 6746, -871966, 7825, 1, 0.052)).toBeCloseTo(0.000452613072577277, 8);
+  expect(finance.RATE(201, 18794, -3204422, 0, 1, 0.045)).toBeCloseTo(0.00169523874360444, 8);
+  expect(finance.RATE(281, 12738, -2958062, 7420, 0, 0.044)).toBeCloseTo(0.00141149645443432, 8);
+  expect(finance.RATE(335, 2279, -638649, 1207, 0, 0.183)).toBeCloseTo(0.0011048595374237, 8);
+  expect(finance.RATE(318, 24054, -6660746, 4334, 1, 0.004)).toBeCloseTo(0.000897856990200117, 8);
+  expect(finance.RATE(272, 19121, -4214494, 9999, 1, 0.155)).toBeCloseTo(0.00162449098764767, 8);
+  expect(finance.RATE(156, 3361, -455469, 7011, 0, 0.107)).toBeCloseTo(0.00199083999331736, 8);
+  expect(finance.RATE(250, 11048, -2645055, 1043, 0, 0.119)).toBeCloseTo(0.000350211028188046, 8);
+  expect(finance.RATE(343, 5509, -1793411, 1349, 1, 0.098)).toBeCloseTo(0.000312287287048883, 8);
+  expect(finance.RATE(148, 10148, -1238183, 4836, 1, 0.025)).toBeCloseTo(0.00276046868694027, 8);
+  expect(finance.RATE(18, 1513, -23074, 2530, 1, 0.196)).toBeCloseTo(0.0291750575562952, 8);
+  expect(finance.RATE(3, 13327, -35170, 8253, 1, 0.057)).toBeCloseTo(0.301775339308948, 8);
+  expect(finance.RATE(40, 23011, -850458, 8953, 1, 0.047)).toBeCloseTo(0.00458881338534384, 8);
+  expect(finance.RATE(162, 10085, -1611330, 8017, 1, 0.156)).toBeCloseTo(0.000232231763828347, 8);
+  expect(finance.RATE(250, 18383, -4170000, 4777, 1, 0.04)).toBeCloseTo(0.00080214926621778, 8);
+  expect(finance.RATE(295, 3356, -809929, 9797, 1, 0.194)).toBeCloseTo(0.0014738436492741, 8);
+  expect(finance.RATE(333, 19421, -5951216, 0, 1, 0.01)).toBeCloseTo(0.000508195140731337, 8);
+  expect(finance.RATE(358, 18653, -6283186, 1031, 0, 0.017)).toBeCloseTo(0.000343697766991371, 8);
+  expect(finance.RATE(63, 22743, -1285375, 7580, 0, 0.03)).toBeCloseTo(0.00361422142500317, 8);
+  expect(finance.RATE(148, 2248, -298202, 6733, 0, 0.059)).toBeCloseTo(0.0017444982670201, 8);
+  expect(finance.RATE(238, 14048, -2790389, 7945, 0, 0.128)).toBeCloseTo(0.00157987893347862, 8);
+  expect(finance.RATE(131, 5974, -688583, 3871, 1, 0.167)).toBeCloseTo(0.00208472130286573, 8);
+  expect(finance.RATE(212, 15608, -2904479, 1849, 0, 0.108)).toBeCloseTo(0.00125715130764662, 8);
+  expect(finance.RATE(78, 16983, -1210806, 329, 0, 0.047)).toBeCloseTo(0.00231826891079059, 8);
+  expect(finance.RATE(138, 16963, -2211253, 4960, 0, 0.029)).toBeCloseTo(0.000857215756588474, 8);
+  expect(finance.RATE(140, 8648, -1093098, 3862, 0, 0.19)).toBeCloseTo(0.00151801334664837, 8);
+  expect(finance.RATE(66, 7039, -450186, 8119, 1, 0.132)).toBeCloseTo(0.00148864318927152, 8);
+  expect(finance.RATE(334, 21773, -6495786, 7652, 0, 0.09)).toBeCloseTo(0.000693187549242507, 8);
+  expect(finance.RATE(49, 7838, -364485, 2210, 1, 0.103)).toBeCloseTo(0.00243237609252972, 8);
+  expect(finance.RATE(260, 3213, -805840, 6932, 0, 0.106)).toBeCloseTo(0.000339006246727423, 8);
+  expect(finance.RATE(175, 13484, -2266292, 4717, 0, 0.076)).toBeCloseTo(0.000484238226264152, 8);
+  expect(finance.RATE(124, 10818, -1143520, 7239, 0, 0.162)).toBeCloseTo(0.00270502567772839, 8);
+  expect(finance.RATE(208, 1087, -181753, 4724, 0, 0.091)).toBeCloseTo(0.00234008359704698, 8);
+  expect(finance.RATE(307, 1643, -452626, 9865, 0, 0.092)).toBeCloseTo(0.000831825949827345, 8);
+  expect(finance.RATE(240, 13862, -3182541, 0, 0, 0.19)).toBeCloseTo(0.000370898654357767, 8);
+  expect(finance.RATE(104, 22230, -2222989, 1619, 1, 0.104)).toBeCloseTo(0.000780335445768033, 8);
+  expect(finance.RATE(64, 7317, -403952, 0, 0, 0.169)).toBeCloseTo(0.00467217191171349, 8);
+  expect(finance.RATE(184, 24557, -4237329, 6730, 1, 0.018)).toBeCloseTo(0.000725698341393931, 8);
+  expect(finance.RATE(213, 5529, -967194, 0, 0, 0.095)).toBeCloseTo(0.00190596968998648, 8);
+  expect(finance.RATE(267, 19450, -4405068, 524, 0, 0.002)).toBeCloseTo(0.0012650748178011, 8);
+  expect(finance.RATE(236, 24246, -5609652, 0, 0, 0.112)).toBeCloseTo(0.000167988559008855, 8);
+  expect(finance.RATE(323, 19394, -5622392, 9624, 1, 0.136)).toBeCloseTo(0.000693154716118348, 8);
+  expect(finance.RATE(323, 24515, -7388465, 2226, 0, 0.167)).toBeCloseTo(0.000434313953903733, 8);
+  expect(finance.RATE(230, 4072, -770328, 3328, 1, 0.044)).toBeCloseTo(0.00179497243795338, 8);
+  expect(finance.RATE(302, 19266, -5801819, 8113, 1, 0.085)).toBeCloseTo(2.81241798927375E-05, 8);
+  expect(finance.RATE(130, 14003, -1516279, 4875, 1, 0.17)).toBeCloseTo(0.00296808568570917, 8);
+  expect(finance.RATE(300, 13403, -3355734, 858, 0, 0.195)).toBeCloseTo(0.00124183794007236, 8);
+  expect(finance.RATE(213, 5529, -967194)).toBeCloseTo(0.00190596968998648, 8);
+  expect(finance.RATE(267, 19450, -4405068, 524,)).toBeCloseTo(0.0012650748178011, 8);
+  expect(finance.RATE(236, 24246, -5609652)).toBeCloseTo(0.000167988559008855, 8);
+  expect(finance.RATE(323, 19394, -5622392, 9624, 1)).toBeCloseTo(0.000693154716118348, 8);
+  expect(finance.RATE(323, 24515, -7388465, 2226)).toBeCloseTo(0.000434313953903733, 8);
+  expect(finance.RATE(230, 4072, -770328, 3328, 1)).toBeCloseTo(0.00179497243795338, 8);
+  expect(finance.RATE(302, 19266, -5801819, 8113, 1)).toBeCloseTo(2.81241798927375E-05, 8);
+  expect(finance.RATE(130, 14003, -1516279, 4875, 1)).toBeCloseTo(0.00296808568570917, 8);
+  expect(finance.RATE(300, 13403, -3355734, 858)).toBeCloseTo(0.00124183794007236, 8);
+  expect(finance.RATE(-1, 333, -1000, 22)).toBe("Error - invalid Period");
+});
+
+test("NPER Function (12 Test Cases / Match Excel to 8 decimal places)", () => {
+  expect(finance.NPER(0.00166666666666667, 500, -25000)).toBeCloseTo(52.2503198074182, 8);
+  expect(finance.NPER(0.0025, 564, -25000)).toBeCloseTo(47.0389585221301, 8);
+  expect(finance.NPER(0.0075, 5848, -50000, 564654, 1)).toBeCloseTo(-160.977634983543, 8);
+  expect(finance.NPER(0.00833333333333333, 313, -33000, 0, 1)).toBeCloseTo(247.087289465708, 8);
+  expect(finance.NPER(0.05, 2500, -15330, 456, 1)).toBeCloseTo(6.89867591269445, 8);
+  expect(finance.NPER(0.00916666666666667, 1654, -13546)).toBeCloseTo(8.55253223758902, 8);
+  expect(finance.NPER(0.0158333333333333, 515615, -854893, 0, 1)).toBeCloseTo(1.66668098571988, 8);
+  expect(finance.NPER(0.0225, 6566, -551321, 9654564, 1)).toBeCloseTo(162.27277971901, 8);
+  expect(finance.NPER(0.015, 6468, -56544)).toBeCloseTo(9.44102400572401, 8);
+  expect(finance.NPER(0.00333333333333333, 1566, -65448, 546)).toBeCloseTo(44.7319121056356, 8);
+  expect(finance.NPER(0.025, 0, -2344)).toBe("Error - Cannot Calculate NPER");
+  expect(finance.NPER(0, 0, -2000)).toBe("Error - Payment cannot be 0");
 });

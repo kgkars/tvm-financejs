@@ -16,7 +16,12 @@
     "amortization",
     "pv",
     "rate",
-    "excel"
+    "excel",
+    "present value",
+    "future value",
+    "interest payment",
+    "principal payment",
+    "time value money"
   ],
   "author": "Kris Karstedt <kristopher@karstedt.com>",
   "license": "MIT",
