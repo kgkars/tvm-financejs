@@ -7,7 +7,7 @@ A library of common financial functions to be used in time value of money calcul
 This library is a set of common finance formulas used in time value of money calculations.  The formulas are designed to have the same input style as Microsoft Excel's finance formula of the same name, and should provide substantially the same return values. (Unit tests all pass to the 8th decimal place).
 
 ### Backstory
-This library came about as I was building a small prototype application that required some simple financial calculations for loan payments, rate, and present value. I was very familiar with the formulas and their uses in Excel (as was my target audience), and looked online for a JavaScript library that had a similar formula structure for the formulas I needed. Essam Al Joubori's great [finance.js](http://financejs.org/) had most of the formulas I needed and in a great integration format, but was missing the critical RATE formula. After a long search and testing of several examples of RATE formulas in other libraries that kept providing inconsistent results compared to Excel, I found examples of Microsoft's [source code for Excel in VBA format](https://github.com/microsoft/referencesource/blob/master/Microsoft.VisualBasic/runtime/msvbalib/Financial.vb). The RATE formula in this document needed a couple tweaks, but performed with great precision compared to the Excel.
+This library came about as I was building a small prototype application that required some simple financial calculations for loan payments, rate, and present value. I was very familiar with the formulas and their uses in Excel (as was my target audience), and looked online for a JavaScript library that had a similar formula structure for the formulas I needed. Essam Al Joubori's great [finance.js](http://financejs.org/) had most of the formulas I needed and in a great integration format, but was missing the critical RATE formula. After a long search and testing of several examples of RATE formulas in other libraries that kept providing inconsistent results compared to Excel, I found examples of Microsoft's [source code for Excel in VBA format](https://github.com/microsoft/referencesource/blob/master/Microsoft.VisualBasic/runtime/msvbalib/Financial.vb). The RATE formula in this document needed a couple tweaks, but performed with great precision compared to Excel.
 
 ## Installation
 
@@ -29,9 +29,9 @@ Math.round(finance.PMT(.0525, 5, -10000) * 100) / 100;
 ### General Notes
 
 - Just like Excel, I do not add rounding to the outputs. In many cases, you may want to use these formulas in combination with each other, in which case a rounded output will degrade the accuracy of the final values.
-- Inputs in '[]' are optional for the formula.
+- Inputs in '[ ]' are optional for the formula.
 - PV is typically represented as a negative value in the inputs/outputs.
-- Rate must be represented in equivalent format to the periods. (e.g. if the APR is 5% but the periods are monthly, you need to divide the rate by 12).**
+- Rate must be represented in equivalent format to the periods. (e.g. if the APR is 5% but the periods are monthly, you need to divide the rate by 12).
 
 ### Input Variables
 
@@ -74,13 +74,19 @@ Returns the calculated interest portion of a payment for a specific period based
 
 `finance.PPMT(rate, per, nper, pv, [fv\], [type]);`
 
-Returns the calculated principal portion of a payment for a specific period based on a constant stream of equal payments and a constant interst rate.
+Returns the calculated principal portion of a payment for a specific period based on a constant stream of equal payments and a constant interest rate.
 
 ### Rate
 
 `finance.RATE(nper, pmt, pv, [fv], [type], [guess]);`
 
 Returns the interest rate per period for a loan or investment.
+
+### Net Present Value
+
+`finance.NPV(rate, value1, [value2], ... [valueN]);`
+
+Returns the net present value of an investment based on a constant rate of return and a series of future payments/investments (as negative values) and income/return (as positive values).
 
 ## Contributing
 

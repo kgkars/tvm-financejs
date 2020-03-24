@@ -252,6 +252,39 @@ Finance.prototype.PPMT = function (rate, per, nper, pv, fv, type) {
 };
 
 // --------------------------------------------------------------------
+// This function calculates the net present value of a series of
+// payments at a constant rate.  It uses the helper function, EVALNPV,
+// to assist in determining the value.  Between this function and
+// EVALNPV, the math is as follows:
+//
+// ## Math:
+//
+//         Value 1        Value 2             Value N
+//  npv = ---------- + ------------- + ... -------------
+//        (1 + rate)   (1 + rate)^2         (1 + rate)^N
+//
+// Returns either a number or error message (as string).
+// --------------------------------------------------------------------
+//
+Finance.prototype.NPV = function (rate) {
+  var values = Array.prototype.slice.call(arguments).slice(1);
+
+  var lowerBound = 0;
+  var upperBound = values.length -1;
+  var tempVar = upperBound - lowerBound + 1;
+
+  if (tempVar < 1) {
+    return "Error - Invalid Values"
+  }
+
+  if (rate === -1) {
+    return "Error - Invalid Rate"
+  }
+
+  return this.EVALNPV(rate, values, 0, lowerBound, upperBound);
+};
+
+// --------------------------------------------------------------------
 // This function returns the estimated contract rate based on the
 // Number of periods, the regular payment, and the present value.
 // Future value, type, and guess (an estimate for the rate) are
@@ -350,6 +383,28 @@ Finance.prototype.EVALRATE = function (rate, nper, pmt, pv, fv, type) {
 
     return pv * tempVar + pmt * tempVar2 * (tempVar - 1) / rate + fv;
   }
+};
+
+// --------------------------------------------------------------------
+// EVALNPV is a local helper function for the
+// NPV calculation.
+// --------------------------------------------------------------------
+//
+Finance.prototype.EVALNPV = function (rate, values, npvType, lowerBound, upperBound) {
+  var tempVar = 1;
+  var tempTotal = 0;
+  var i = lowerBound;
+
+  while (i <= upperBound) {
+    var tempVar2 = values[i];
+    tempVar = tempVar + tempVar * rate;
+
+    if (! (npvType > 0 &&  tempVar2 > 0) || ! (npvType < 0 && tempVar2 < 0)) {
+      tempTotal = tempTotal + tempVar2 / tempVar;
+    }
+    i++
+  }
+  return tempTotal
 };
 
 module.exports = Finance;
