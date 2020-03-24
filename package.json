@@ -1,6 +1,6 @@
 {
   "name": "tvm-financejs",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A JavaScript library of common financial functions to be used in time value of money calculations.",
   "main": "index.js",
   "scripts": {
