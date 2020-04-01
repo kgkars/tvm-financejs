@@ -285,6 +285,104 @@ Finance.prototype.NPV = function (rate) {
 };
 
 // --------------------------------------------------------------------
+// This function calculates the Internal Rate of Return (IRR) of a
+// series of regular cash flows.  Negative values represent
+// investments, and positive values represent returns.
+//
+// ## Math:
+//
+// Essentially, the algorithm uses the secant method to find a rate
+// where the net present value is equal to 0, stepping through the
+// calculations iteratively.  Once the rate is within the Epsilon
+// tolerance, the approximate rate is returned.
+//
+// Returns either a number or error message (as string).
+// --------------------------------------------------------------------
+//
+Finance.prototype.IRR = function(values, guess) {
+  guess = typeof guess === "undefined" ? 0.1 : guess;
+
+  var epslMax = 0.0000001;
+  var step = 0.00001;
+  var iterMax = 39;
+
+  //Check for valid inputs
+  if (guess <= -1) {
+    return "Error - invalid guess";
+  }
+
+  if (values.length < 1) {
+    return null;
+  }
+
+  //Scale up the Epsilon Max based on cash flow values
+  var tempVar = values[0] > 0 ? values[0] : values[0] * -1;
+  var i = 0;
+
+  while (i < values.length) {
+    if (Math.abs(values[i]) > tempVar) {
+      tempVar = Math.abs(values[i]);
+    }
+    i++;
+  }
+
+  tempNpvEpsl = tempVar * epslMax * 0.01
+
+  tempRate0 = guess;
+  tempNpv0 = this.InternalPV(values, tempRate0);
+
+  var tempRate1 = tempNpv0 > 0 ? tempRate0 + step : tempRate0 - step;
+
+  if (tempRate1 <= -1) {
+    return "Error - invalid values";
+  }
+
+  var tempNpv1 = this.InternalPV(values, tempRate1);
+
+  var i = 0;
+
+  while (i <= iterMax) {
+    if (tempNpv1 === tempNpv0) {
+      tempRate0 = tempRate1 > tempRate0 ? tempRate0 - step : tempRate0 + step;
+
+      tempNpv0 = this.InternalPV(values, tempRate0);
+
+      if (tempNpv1 === tempNpv0) {
+        return "Error - invalid values";
+      }
+    }
+    
+    tempRate0 = tempRate1 - (tempRate1 - tempRate0) * tempNpv1 / (tempNpv1 - tempNpv0);
+
+    //Secant method
+    if (tempRate0 <= -1) {
+      tempRate0 = (tempRate1 - 1) * 0.5;
+    }
+
+    //Give the algorithm a second chance...
+    tempNpv0 = this.InternalPV(values, tempRate0);
+    tempVar = tempRate0 > tempRate1 ? tempRate0 - tempRate1 : tempRate1 - tempRate0;
+    
+    var tempVar2 = tempNpv0 > 0 ? tempNpv0 : tempNpv0 * -1;
+
+    //Test for npv = 0 and rate convergence
+    if (tempVar2 < tempNpvEpsl && tempVar < epslMax) {
+      return tempRate0;
+    }
+    //Transfer values and try again...
+    tempVar = tempNpv0;
+    tempNpv0 = tempNpv1;
+    tempNpv1 = tempVar;
+    tempVar = tempRate0;
+    tempRate0 = tempRate1;
+    tempRate1 = tempVar;
+
+    i++;
+
+  }
+  return "Error - iterMax exceeded"
+};
+// --------------------------------------------------------------------
 // This function returns the estimated contract rate based on the
 // Number of periods, the regular payment, and the present value.
 // Future value, type, and guess (an estimate for the rate) are
@@ -406,5 +504,34 @@ Finance.prototype.EVALNPV = function (rate, values, npvType, lowerBound, upperBo
   }
   return tempTotal
 };
+
+// --------------------------------------------------------------------
+// InternalPV is a local helper function for the
+// IRR calculation.
+// --------------------------------------------------------------------
+//
+Finance.prototype.InternalPV = function (values, guess) {
+  guess = typeof guess === "undefined" ? 0.1 : guess;
+
+  var lowerBound = 0;
+  var upperBound = values.length - 1;
+
+  var tempTotal = 0
+  var divRate = 1 + guess;
+
+  while (lowerBound <= upperBound && values[lowerBound] === 0) {
+    lowerBound++;
+  }
+
+  var i = upperBound;
+  var step = -1
+
+  while (i >= lowerBound) {
+    tempTotal = tempTotal / divRate;
+    tempTotal = tempTotal + values[i];
+    i = i + step;
+  }
+  return tempTotal;
+}
 
 module.exports = Finance;

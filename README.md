@@ -15,7 +15,8 @@ This library came about as I was building a small prototype application that req
 
 ## Example Usage
 
-```var Finance = require("tvm-financejs");
+```
+var Finance = require("tvm-financejs");
 
 var finance = new Finance();
 
@@ -23,6 +24,8 @@ var finance = new Finance();
 Math.round(finance.PMT(.0525, 5, -10000) * 100) / 100;
 // Returns 2325.73
 ```
+
+To see these formulas in use, please visit [tvm-calculator](https://kgkars.github.io/tvm-calculator/#/).
 
 ## Available Functions
 
@@ -45,6 +48,7 @@ Variable | Description
 **rate** | rate for the period(s)
 **type** | when payments are due (0 for end of period/arrears, and 1 for beginning of period/advance)
 **guess** | a guess at the rate, optional value for the RATE formula
+**values** | a set of periodic cash flows
 
 ### Present Value
 
@@ -87,6 +91,27 @@ Returns the interest rate per period for a loan or investment.
 `finance.NPV(rate, value1, [value2], ... [valueN]);`
 
 Returns the net present value of an investment based on a constant rate of return and a series of future payments/investments (as negative values) and income/return (as positive values).
+
+### Internal Rate of Return
+
+`finance.IRR(values, [guess]);`
+
+Returns the internal rate of return for a series of cash flows.
+
+A couple of items to note about this formula:
+- The variable values must be input as an array.
+- There must be at least one negative and one positive value as part of the cash flow.
+- Cash flows are assumed to be due in the same order they are arranged in the Array.
+
+Example usage:
+
+```
+returnIRR() {
+  const values = [-1500, 500, 500, 500, 500];
+  return Math.round(finance.IRR(values) * 100 ) / 100 * 100;
+}
+// returns 12.59
+```
 
 ## Contributing
 
